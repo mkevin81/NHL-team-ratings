@@ -43,8 +43,7 @@ def fw_ratings(team):
         rating_df = pd.melt(rating_df,var_name='Team',value_name='Fw_rating')
         return rating_df
     
-    else:
-        print('Not Happening')  
+    
         
         
 def sp_ratings():    
