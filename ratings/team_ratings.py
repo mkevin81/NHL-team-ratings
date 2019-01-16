@@ -10,6 +10,10 @@ from collections import Counter
 from sklearn.preprocessing import StandardScaler
 
 def fw_ratings(team):
+    
+    #Takes in 'team initials' or league' and returns expected goal differential per game vs. 
+    #average opponent dataframe. This rating doesnt take into account special teams, goalies or injuries.
+    
     url = 'http://www.puckon.net/?_ga=2.210512981.1165101973.1547008033-2109006389.1546797137'
     raw = pd.read_html(url,header=1)[0]
     raw_cut = raw[['Team','GP','SA.1','ESVA.1']]
@@ -46,7 +50,10 @@ def fw_ratings(team):
     
         
         
-def sp_ratings():    
+def sp_ratings():
+    
+    #Function returns power play opportunities and power play goals by team and their 
+    #opponents on a per game basis in a dataframe.
     
     t_lst = []
 
