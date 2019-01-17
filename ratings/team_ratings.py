@@ -112,3 +112,18 @@ def ovr_rankings():
     
     return df[['Tm','ovr_rating']].sort_values(by='ovr_rating',ascending=False).reset_index(drop=True)
 
+def goalies_ratings():
+    
+    url = 'https://www.hockey-reference.com/leagues/NHL_2019_goalies.html'
+    raw = pd.read_html(url,header=1)[0]
+    raw = raw[raw['Player'] != 'Player']
+    raw = raw[['Player','Tm','GS','GAA','SO','QS%',]]
+    to_nums = ['GS','GAA','SO','QS%']
+    raw[to_nums] = raw[to_nums].apply(pd.to_numeric)
+    raw_teams = raw.groupby(['Tm']).mean().round(3)
+    df = raw.merge(raw_teams,on='Tm',suffixes=('_p','_t'))
+    df['QS%_rating'] = -1 * (df['QS%_p']-df['QS%_p'].mean())
+    df['GAA-adj'] = df['GAA_p']+(df['GAA_p']*df['QS%_rating'])
+    df['Goalie_dif'] = df['GAA-adj'] - df['GAA_t']
+    
+    return df[['Player','Tm','GS_p','GAA_p','QS%_p','QS%_rating','GAA-adj','Goalie_dif']]
